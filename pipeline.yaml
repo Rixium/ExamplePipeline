@@ -1,0 +1,29 @@
+name: 
+  $(Date:yyyyMMdd)
+
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+
+- name: targetDatabaseServer
+  value: someServer
+
+
+- name: databaseUser
+  value: someUser
+
+
+- name: databasePassword
+  value: somePassword
+
+
+steps:
+- task: redgatesoftware.redgateDlmAutomationBuild-debug.DlmAutomationBuildTask.RedgateSqlChangeAutomationBuild@4
+  displayName: 'Build SQL Change Automation Project'
+  inputs:
+    sqlProj: MyDatabaseProject.sqlproj
+    packageName: databasepackage
+- template : create-release.yaml
+  parameters:
+    databases: ["database1","database2","database3","database4","database5"]
