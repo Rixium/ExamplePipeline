@@ -1,0 +1,15 @@
+parameters:
+  databases : [] 
+
+steps:
+- ${{ each database in parameters.databases }}:
+    - task: redgatesoftware.redgateDlmAutomationRelease.DlmAutomationReleaseTask.RedgateSqlChangeAutomationRelease@4
+      displayName: 'Perform DeployFromPackage'
+      inputs:
+          Operation: DeployFromPackage
+          PackagePath: 'databasepackage.1.0.nupkg'
+          TargetDatabaseServer: ${{ variables.targetDatabaseServer }}
+          TargetDatabaseName: ${{ database }} 
+          TargetAuthMethod: sqlServerAuth
+          TargetDatabaseUsername: ${{ variables.databaseUser }}
+          TargetDatabasePassword: ${{ variables.databasePassword }}
