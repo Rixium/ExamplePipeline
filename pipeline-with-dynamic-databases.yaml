@@ -1,0 +1,20 @@
+name: 
+  $(Date:yyyyMMdd)
+
+pool:
+  vmImage: 'windows-2019'
+
+parameters:
+- name: databases 
+  type: object
+  default: []
+
+steps:
+- task: redgatesoftware.redgateDlmAutomationBuild-debug.DlmAutomationBuildTask.RedgateSqlChangeAutomationBuild@4
+  displayName: 'Build SQL Change Automation Project'
+  inputs:
+    sqlProj: AzurePipelinesMultiDatabase.sqlproj
+    packageName: databasepackage
+- template : deploy-from-package.yaml
+  parameters: 
+    databases: ${{ parameters.databases }}
